@@ -1,3 +1,5 @@
 <resources>
-    <string name="app_name">weather-app</string>
+    <string name="app_name">Погода</string>
+    <string name="weatherLabel">Погода</string>
+    <string name="favoritesLabel">Избранное</string>
 </resources>
