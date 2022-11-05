@@ -12,6 +12,7 @@
     <color name="darkBlueDayTheme">#5C6BC0</color>
     <color name="greyDayTheme">#FFFFFF</color>
     <color name="greyNightTheme">#E6E6E6</color>
+    <color name="darkGreyDayTheme">#B2B2B2</color>
 
     <color name="lightBlueNightTheme">#283593</color>
     <color name="darkBlueNightTheme">#1A237E</color>

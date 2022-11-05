@@ -13,7 +13,6 @@ class FavoritesActivity : AppCompatActivity() {
         binding = ActivityFavoritesBinding.inflate(layoutInflater).also { setContentView(it.root) }
 
         binding.backButton.setOnClickListener { finish() }
-
     }
 
 }

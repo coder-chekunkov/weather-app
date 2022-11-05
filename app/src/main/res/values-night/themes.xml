@@ -29,5 +29,8 @@
         <item name="android:tint">@color/greyNightTheme</item>
     </style>
 
+    <style name="Theme.ImageView" parent="android:Theme">
+        <item name="android:tint">@color/darkGreyDayTheme</item>
+    </style>
 
 </resources>

@@ -29,4 +29,18 @@
         <item name="android:tint">@color/greyDayTheme</item>
     </style>
 
+    <style name="Theme.ImageView" parent="android:Theme">
+        <item name="android:tint">@color/darkGreyDayTheme</item>
+    </style>
+
+    <style name="Theme.TextView.Title" parent="android:Theme">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:tint">@color/darkGreyDayTheme</item>
+    </style>
+
+    <style name="Theme.Favorite.ImageButton" parent="android:Theme">
+        <item name="android:tint">@color/darkGreyDayTheme</item>
+    </style>
+
 </resources>
