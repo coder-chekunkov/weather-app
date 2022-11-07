@@ -1,23 +1,27 @@
-package com.cdr.weather_app.model
+package com.cdr.weather_app.model.StorageWorker
 
 import android.content.Context
+import com.cdr.weather_app.model.WeatherData
 import com.google.gson.Gson
 import org.json.JSONArray
 import java.io.*
 
-class StorageWorker {
+class WeatherDataStorageWorker {
 
-    fun saveWeatherData(context: Context, weatherData: ArrayList<WeatherData>) {
+    fun saveWeatherData(context: Context, weatherData: List<WeatherData>) {
         val data = Gson().toJson(weatherData)
 
-        val writer = OutputStreamWriter(context.openFileOutput(FILE_NAME, Context.MODE_PRIVATE))
+        val writer = OutputStreamWriter(
+            context.openFileOutput(WEATHER_DATA_FILE_NAME, Context.MODE_PRIVATE)
+        )
         writer.write(data)
         writer.close()
     }
 
     private fun readWeatherDataFile(context: Context): String {
         val file = StringBuilder()
-        val inputStream: InputStream = context.openFileInput(FILE_NAME)
+        val inputStream: InputStream = context.openFileInput(WEATHER_DATA_FILE_NAME)
+
         val bufferedReader = BufferedReader(InputStreamReader(inputStream))
         var s: String?
         while (bufferedReader.readLine().also { s = it } != null) {
@@ -28,10 +32,9 @@ class StorageWorker {
         return file.toString()
     }
 
-    fun readWeatherData(context: Context): ArrayList<WeatherData> {
+    fun readWeatherData(context: Context): List<WeatherData> {
         val dataFromStorage = ArrayList<WeatherData>()
         val data = readWeatherDataFile(context)
-
         val jsonRoot = JSONArray(data)
 
         for (i in 0 until jsonRoot.length()) {
@@ -47,12 +50,11 @@ class StorageWorker {
                 )
             )
         }
-
         return createOrderedList(dataFromStorage)
     }
 
-    private fun createOrderedList(dataFromStorage: ArrayList<WeatherData>): ArrayList<WeatherData> {
-        val weatherData = ArrayList<WeatherData>()
+    private fun createOrderedList(dataFromStorage: ArrayList<WeatherData>): List<WeatherData> {
+        val weatherData = mutableListOf<WeatherData>()
         ID_OF_CITIES.forEach {
             for (data in dataFromStorage) {
                 if (it == data.id) weatherData.add(data)
@@ -64,12 +66,12 @@ class StorageWorker {
 
     companion object {
         @JvmStatic
-        val FILE_NAME = "weatherData.json"
+        val WEATHER_DATA_FILE_NAME = "weatherData.json"
+
         val ID_OF_CITIES = listOf(
             524901, 498817, 472757, 542415, 501183, 491422, 554234,
             499068, 473249, 553899, 580497, 473247, 479561, 1508291, 2123628, 1497337, 511565,
             491684, 500096, 563514
         )
     }
-
 }

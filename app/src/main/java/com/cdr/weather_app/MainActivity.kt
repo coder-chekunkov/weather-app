@@ -10,7 +10,8 @@ import android.os.Bundle
 import android.view.View
 import com.cdr.weather_app.databinding.ActivityMainBinding
 import com.cdr.weather_app.model.GetWeatherData
-import com.cdr.weather_app.model.StorageWorker
+import com.cdr.weather_app.model.StorageWorker.FavoriteDataStorageWorker
+import com.cdr.weather_app.model.StorageWorker.WeatherDataStorageWorker
 import com.cdr.weather_app.model.WeatherData
 import com.cdr.weather_app.viewmodel.AdapterWeatherData
 
@@ -40,9 +41,11 @@ class MainActivity : AppCompatActivity() {
     private fun clickButtonRefresh() = GetWeatherData().downloadWeatherData(this, binding)
 
     fun renderUI(context: Context, binding: ActivityMainBinding) {
-        weatherData = ArrayList(StorageWorker().readWeatherData(context))
+        weatherData = ArrayList(WeatherDataStorageWorker().readWeatherData(context))
 
-        binding.listView.adapter = AdapterWeatherData(weatherData)
+        val favoriteData = FavoriteDataStorageWorker().readFavoriteData(context)
+
+        binding.listView.adapter = AdapterWeatherData(weatherData, favoriteData)
     }
 
     private fun getWeatherData() {
@@ -53,8 +56,7 @@ class MainActivity : AppCompatActivity() {
 
     @SuppressLint("NewApi")
     private fun isConnection(): Boolean {
-        val connectivityManager =
-            this.getSystemService(CONNECTIVITY_SERVICE) as ConnectivityManager
+        val connectivityManager = this.getSystemService(CONNECTIVITY_SERVICE) as ConnectivityManager
         val capabilities =
             connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
         if (capabilities != null) {

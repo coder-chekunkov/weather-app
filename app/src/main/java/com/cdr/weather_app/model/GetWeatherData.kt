@@ -4,12 +4,13 @@ import android.content.Context
 import android.widget.Toast
 import com.cdr.weather_app.MainActivity
 import com.cdr.weather_app.databinding.ActivityMainBinding
+import com.cdr.weather_app.model.StorageWorker.WeatherDataStorageWorker
 import retrofit2.*
 import retrofit2.converter.gson.GsonConverterFactory
 
 class GetWeatherData {
 
-    fun downloadWeatherData(context: Context, binding: ActivityMainBinding){
+    fun downloadWeatherData(context: Context, binding: ActivityMainBinding) {
         val weatherData = ArrayList<WeatherData>()
 
         val retrofit = Retrofit.Builder()
@@ -18,7 +19,7 @@ class GetWeatherData {
             .build()
         val weatherService = retrofit.create(WeatherService::class.java)
 
-        for (city in NAME_OF_CITIES){
+        for (city in NAME_OF_CITIES) {
             val call = weatherService.getCurrentWeatherData("$city,ru", APP_ID)
             call?.enqueue(object : Callback<WeatherResponse?> {
                 override fun onResponse(
@@ -42,8 +43,12 @@ class GetWeatherData {
                     }
 
                     if (weatherData.size == 20) {
-                        StorageWorker().saveWeatherData(context, weatherData)
-                        Toast.makeText(context, "Data has been downloaded!", Toast.LENGTH_SHORT).show()
+                        WeatherDataStorageWorker().saveWeatherData(
+                            context,
+                            weatherData
+                        )
+                        Toast.makeText(context, "Data has been downloaded!", Toast.LENGTH_SHORT)
+                            .show()
                         MainActivity().renderUI(context, binding)
                     }
                 }
@@ -57,6 +62,7 @@ class GetWeatherData {
     }
 
     companion object {
+
         const val BASE_URL = "http://api.openweathermap.org/"
         const val APP_ID = "7b79fc58e45785b7be4c3e6688a9a8b3"
         val NAME_OF_CITIES = arrayOf(
