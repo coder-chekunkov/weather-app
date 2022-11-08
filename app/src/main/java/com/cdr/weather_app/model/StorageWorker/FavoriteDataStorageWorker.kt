@@ -18,7 +18,6 @@ class FavoriteDataStorageWorker {
         writer.close()
     }
 
-
     fun readFavoriteData(context: Context): ArrayList<WeatherData> {
         val dataFromStorage = ArrayList<WeatherData>()
 
@@ -42,7 +41,6 @@ class FavoriteDataStorageWorker {
             return createOrderedList(dataFromStorage)
         } else return ArrayList()
     }
-
 
     private fun readFavoriteDataFromStorage(context: Context): String {
         val file = StringBuilder()

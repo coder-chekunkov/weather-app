@@ -36,6 +36,7 @@ class MainActivity : AppCompatActivity() {
     private fun clickButtonFavorites() {
         val intent = Intent(this, FavoritesActivity::class.java)
         startActivity(intent)
+        finish()
     }
 
     private fun clickButtonRefresh() = GetWeatherData().downloadWeatherData(this, binding)
@@ -44,7 +45,6 @@ class MainActivity : AppCompatActivity() {
         weatherData = ArrayList(WeatherDataStorageWorker().readWeatherData(context))
 
         val favoriteData = FavoriteDataStorageWorker().readFavoriteData(context)
-
         binding.listView.adapter = AdapterWeatherData(weatherData, favoriteData)
     }
 
