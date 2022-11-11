@@ -33,12 +33,12 @@
 </p>
 
 <p align="center">
- <img alt="GIF" src="https://github.com/coder-chekunkov/weather-app/blob/main/wiki_images/wiki_image_001.jpg" width="280"/>
- <img alt="GIF" src="https://github.com/coder-chekunkov/weather-app/blob/main/wiki_images/wiki_image_002.jpg" width="280"/>
- <img alt="GIF" src="https://github.com/coder-chekunkov/weather-app/blob/main/wiki_images/wiki_image_003.jpg" width="280"/> <br/>
- <img alt="GIF" src="https://github.com/coder-chekunkov/weather-app/blob/main/wiki_images/wiki_image_004.jpg" width="280"/>
- <img alt="GIF" src="https://github.com/coder-chekunkov/weather-app/blob/main/wiki_images/wiki_image_005.jpg" width="280"/>
- <img alt="GIF" src="https://github.com/coder-chekunkov/weather-app/blob/main/wiki_images/wiki_image_006.jpg" width="280"/>
+ <img alt="GIF" src="https://github.com/coder-chekunkov/weather-app/blob/main/wiki_images/wiki_image_001.jpg" width="230"/>
+ <img alt="GIF" src="https://github.com/coder-chekunkov/weather-app/blob/main/wiki_images/wiki_image_002.jpg" width="230"/>
+ <img alt="GIF" src="https://github.com/coder-chekunkov/weather-app/blob/main/wiki_images/wiki_image_003.jpg" width="230"/> <br/>
+ <img alt="GIF" src="https://github.com/coder-chekunkov/weather-app/blob/main/wiki_images/wiki_image_004.jpg" width="230"/>
+ <img alt="GIF" src="https://github.com/coder-chekunkov/weather-app/blob/main/wiki_images/wiki_image_005.jpg" width="230"/>
+ <img alt="GIF" src="https://github.com/coder-chekunkov/weather-app/blob/main/wiki_images/wiki_image_006.jpg" width="230"/>
 </p>
 
 <p align="center">
