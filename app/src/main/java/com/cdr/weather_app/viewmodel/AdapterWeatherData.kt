@@ -26,6 +26,11 @@ class AdapterWeatherData(
 
         val data = weatherData[p0]
 
+        var isContainsFavorite = false
+        favoriteData.forEach {
+            if (it.id == data.id) isContainsFavorite = true
+        }
+
         with(binding) {
             cityTextView.text = data.name
             descriptionTextView.text = "\"${data.description}\""
@@ -35,7 +40,7 @@ class AdapterWeatherData(
             descriptionImageView.setImageResource(createDescriptionImageView(data.description))
             itemButton.setColorFilter(p2.context.getColor(R.color.darkGreyDayTheme))
 
-            if (favoriteData.contains(data)) {
+            if (isContainsFavorite) {
                 itemButton.isClickable = false
                 itemButton.setColorFilter(p2.context.getColor(R.color.favoriteData))
             } else {
