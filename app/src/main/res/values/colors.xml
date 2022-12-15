@@ -8,6 +8,7 @@
 
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="red">#EF5350</color>
     <color name="lightBlueDayTheme">#7986CB</color>
     <color name="darkBlueDayTheme">#5C6BC0</color>
     <color name="lightBlueNightTheme">#283593</color>

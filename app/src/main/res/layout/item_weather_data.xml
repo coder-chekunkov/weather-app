@@ -60,18 +60,18 @@
         app:layout_constraintTop_toBottomOf="@id/temperatureTextView"
         tools:text="Wind Speed: 4.8 m/c" />
 
-    <ImageButton
-        android:id="@+id/itemButton"
-        style="@style/Theme.Favorite.ImageButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="0dp"
-        android:layout_marginEnd="10dp"
-        android:background="@null"
-        android:src="@drawable/ic_favorite_button"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="ContentDescription" />
+<!--    <ImageButton-->
+<!--        android:id="@+id/itemButton"-->
+<!--        style="@style/Theme.Favorite.ImageButton"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginStart="0dp"-->
+<!--        android:layout_marginEnd="10dp"-->
+<!--        android:background="@null"-->
+<!--        android:src="@drawable/ic_favorite_button"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent"-->
+<!--        tools:ignore="ContentDescription" />-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

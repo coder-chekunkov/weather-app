@@ -1,73 +1,69 @@
 package com.cdr.weather_app
 
-import android.annotation.SuppressLint
-import android.content.Context
-import android.content.Intent
-import android.net.ConnectivityManager
-import android.net.NetworkCapabilities
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
+import android.view.Menu
+import androidx.appcompat.app.AppCompatActivity
+import com.cdr.core.ActivityScopeViewModel
+import com.cdr.core.navigator.IntermediateNavigator
+import com.cdr.core.navigator.StackFragmentNavigator
+import com.cdr.core.uiactions.AndroidUiActions
+import com.cdr.core.utils.viewModelCreator
+import com.cdr.core.views.FragmentHolder
 import com.cdr.weather_app.databinding.ActivityMainBinding
-import com.cdr.weather_app.model.GetWeatherData
-import com.cdr.weather_app.model.StorageWorker.FavoriteDataStorageWorker
-import com.cdr.weather_app.model.StorageWorker.WeatherDataStorageWorker
-import com.cdr.weather_app.model.WeatherData
-import com.cdr.weather_app.viewmodel.AdapterWeatherData
+import com.cdr.weather_app.screens.all_cities.AllCitiesFragment
+import com.cdr.weather_app.screens.internet_connection.InternetConnectionFragment
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), FragmentHolder {
 
     private lateinit var binding: ActivityMainBinding
-    private var weatherData = ArrayList<WeatherData>()
+    private lateinit var navigator: StackFragmentNavigator
+    private val viewModel by viewModelCreator<ActivityScopeViewModel> {
+        ActivityScopeViewModel(
+            navigator = IntermediateNavigator(), uiActions = AndroidUiActions(applicationContext)
+        )
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater).also { setContentView(it.root) }
 
-        binding.favoritesButton.setOnClickListener { clickButtonFavorites() }
-        binding.refreshButton.setOnClickListener { clickButtonRefresh() }
+        navigator = StackFragmentNavigator(
+            activity = this,
+            containerId = R.id.fragmentContainer,
+            toolbar = binding.toolbar,
+            defaultTitle = getString(R.string.app_name),
+            animations = null
+        ) { if (checkInternetConnection()) AllCitiesFragment.Screen() else InternetConnectionFragment.Screen() }
 
-        if (isConnection()) getWeatherData() else {
-            binding.refreshButton.isClickable = false
-            binding.favoritesButton.isClickable = false
-        }
+        navigator.onCreate(savedInstanceState)
     }
 
-    private fun clickButtonFavorites() {
-        val intent = Intent(this, FavoritesActivity::class.java)
-        startActivity(intent)
-        finish()
+    override fun onResume() {
+        super.onResume()
+        viewModel.navigator.setTarget(navigator)
     }
 
-    private fun clickButtonRefresh() = GetWeatherData().downloadWeatherData(this, binding)
-
-    fun renderUI(context: Context, binding: ActivityMainBinding) {
-        weatherData = ArrayList(WeatherDataStorageWorker().readWeatherData(context))
-
-        val favoriteData = FavoriteDataStorageWorker().readFavoriteData(context)
-        binding.listView.adapter = AdapterWeatherData(weatherData, favoriteData)
+    override fun onPause() {
+        super.onPause()
+        viewModel.navigator.setTarget(null)
     }
 
-    private fun getWeatherData() {
-        GetWeatherData().downloadWeatherData(this, binding)
-        binding.internetConnectionImageVIew.visibility = View.GONE
-        binding.internetConnectionTextView.visibility = View.GONE
+    override fun onDestroy() {
+        super.onDestroy()
+        navigator.onDestroy()
     }
 
-    @SuppressLint("NewApi")
-    private fun isConnection(): Boolean {
-        val connectivityManager = this.getSystemService(CONNECTIVITY_SERVICE) as ConnectivityManager
-        val capabilities =
-            connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
-        if (capabilities != null) {
-            if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)) {
-                return true
-            } else if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)) {
-                return true
-            } else if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)) {
-                return true
-            }
-        }
-        return false
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        notifyScreenUpdates()
+        return true
     }
+
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return true
+    }
+
+    override fun notifyScreenUpdates() = navigator.notifyScreenUpdates()
+    override fun getActivityScopeViewModel(): ActivityScopeViewModel = viewModel
+    override fun checkInternetConnection(): Boolean = navigator.checkInternetConnection()
 }

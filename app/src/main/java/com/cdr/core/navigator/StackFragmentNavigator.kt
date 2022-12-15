@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.os.bundleOf
+import androidx.core.view.forEach
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.cdr.core.views.*
@@ -111,6 +112,10 @@ class StackFragmentNavigator(
             // fragment has custom action -> display it
             if (f is HasCustomAction) createCustomToolbarAction(f.getCustomAction())
             else toolbar.menu.clear()
+
+            // fragment has several custom actions -> display it
+            if (f is HasSeveralCustomActions) createSeveralCustomToolbarActions(f.getSeveralCustomActions())
+            else activity.invalidateOptionsMenu()
         }
     }
 
@@ -130,6 +135,26 @@ class StackFragmentNavigator(
         menuItem.setOnMenuItemClickListener {
             action.onCustomAction.run()
             return@setOnMenuItemClickListener true
+        }
+    }
+
+    /**
+     * Method of updating UI with several custom actions. If custom implements [HasSeveralCustomActions].
+     */
+    private fun createSeveralCustomToolbarActions(actions: SeveralCustomActions) {
+        activity.invalidateOptionsMenu()
+        toolbar!!.menu.clear()
+
+        toolbar.inflateMenu(actions.menuRes)
+        toolbar.menu.forEach { item ->
+            item.setOnMenuItemClickListener {
+                val itemId = it.itemId
+                val actionId = actions.onSeveralCustomActions.indexOfFirst { a -> a.id == itemId }
+
+                if (actionId == -1) return@setOnMenuItemClickListener false
+                actions.onSeveralCustomActions[actionId].action.run()
+                return@setOnMenuItemClickListener true
+            }
         }
     }
 
