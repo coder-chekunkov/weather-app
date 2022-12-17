@@ -32,7 +32,12 @@ class MainActivity : AppCompatActivity(), FragmentHolder {
             containerId = R.id.fragmentContainer,
             toolbar = binding.toolbar,
             defaultTitle = getString(R.string.app_name),
-            animations = null
+            animations = StackFragmentNavigator.Animations(
+                enterAnim = R.anim.enter,
+                exitAnim = R.anim.exit,
+                popEnterAnim = R.anim.pop_enter,
+                popExitAnim = R.anim.pop_exit
+            )
         ) { if (checkInternetConnection()) AllCitiesFragment.Screen() else InternetConnectionFragment.Screen() }
 
         navigator.onCreate(savedInstanceState)
