@@ -11,18 +11,24 @@ import com.cdr.weather_app.model.all_cities_worker.AllCities
 import com.cdr.weather_app.model.all_cities_worker.AllCitiesListener
 import com.cdr.weather_app.model.all_cities_worker.AllCitiesRepository
 import com.cdr.weather_app.model.all_cities_worker.correctSort
+import com.cdr.weather_app.model.storage_worker.FavoriteCitiesListener
+import com.cdr.weather_app.model.storage_worker.StorageRepository
 import com.cdr.weather_app.screens.favorites_cities.FavoriteCitiesFragment
 import com.cdr.weather_app.screens.internet_connection.InternetConnectionFragment
 
 class AllCitiesViewModel(
     private val navigator: Navigator,
     private val uiActions: UiActions,
-    private val allCitiesRepository: AllCitiesRepository
+    private val allCitiesRepository: AllCitiesRepository,
+    private val favoriteCitiesRepository: StorageRepository
 ) : BaseViewModel() {
 
     private val _allCities = MutableLiveData<List<AllCities>>()
     val allCities: LiveData<List<AllCities>> = _allCities
     var isSnackbarShow = true
+
+    private val _favoriteIDs = MutableLiveData<List<Long>>()
+    val favoriteIDs: LiveData<List<Long>> = _favoriteIDs
 
     private val allCitiesListener: AllCitiesListener = {
         if (it.size == 20) {
@@ -30,8 +36,14 @@ class AllCitiesViewModel(
             _allCities.value = it.correctSort()
         }
     }
+    private val favoriteCitiesListener: FavoriteCitiesListener = {
+        val buffIDs = mutableListOf<Long>()
+        it.forEach { value -> buffIDs.add(value.id) }
+        _favoriteIDs.value = buffIDs
+    }
 
     init {
+        favoriteCitiesRepository.addListener(favoriteCitiesListener)
         allCitiesRepository.addListener(allCitiesListener)
         allCitiesRepository.downloadData()
     }
@@ -52,8 +64,12 @@ class AllCitiesViewModel(
         isSnackbarShow = false
     }
 
+    fun likeCity(city: AllCities) = favoriteCitiesRepository.likeCity(city)
+    fun moreInfo(city: AllCities) = uiActions.showToast(city.toString())
+
     override fun onCleared() {
         super.onCleared()
+        favoriteCitiesRepository.removeListener(favoriteCitiesListener)
         allCitiesRepository.removeListener(allCitiesListener)
     }
 }

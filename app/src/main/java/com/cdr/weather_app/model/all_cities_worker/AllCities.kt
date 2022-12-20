@@ -7,8 +7,11 @@ data class AllCities(
     val name: String?,
     val description: String?,
     val temperature: Float?,
-    val windSpeed: Float?
-)
+    val windSpeed: Float?,
+    val linkName: String?
+) {
+    override fun toString(): String = "$name[Temperature: $temperature; Wind Speed: $windSpeed]"
+}
 
 fun List<AllCities>.correctSort(): List<AllCities> {
     val sortedList = mutableListOf<AllCities>()

@@ -39,7 +39,8 @@ class AllCitiesRepository : Repository {
                                 name = weatherResponse?.name,
                                 description = weatherResponse?.weather?.get(0)?.main,
                                 temperature = weatherResponse?.main?.temp,
-                                windSpeed = weatherResponse?.wind?.speedWind
+                                windSpeed = weatherResponse?.wind?.speedWind,
+                                linkName = city
                             )
                         )
                         notifyChanges()

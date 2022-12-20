@@ -61,7 +61,7 @@
         tools:text="Wind Speed: 4.8 m/c" />
 
     <ImageButton
-        android:id="@+id/itemLikeCity"
+        android:id="@+id/itemMore"
         style="@style/Theme.Favorite.ImageButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

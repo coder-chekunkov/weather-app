@@ -2,43 +2,33 @@ package com.cdr.weather_app.screens.all_cities
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.DiffUtil
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.cdr.weather_app.R
 import com.cdr.weather_app.databinding.ItemAllCitiesBinding
 import com.cdr.weather_app.model.all_cities_worker.AllCities
 
-class AllCitiesDiffUtil(
-    private val oldList: List<AllCities>, private val newList: List<AllCities>
-) : DiffUtil.Callback() {
-    override fun getOldListSize(): Int = oldList.size
-    override fun getNewListSize(): Int = newList.size
-
-    override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-        val oldCity = oldList[oldItemPosition]
-        val newCity = newList[newItemPosition]
-
-        return oldCity.id == newCity.id
-    }
-
-    override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-        val oldCity = oldList[oldItemPosition]
-        val newCity = newList[newItemPosition]
-
-        return oldCity == newCity
-    }
+interface OnCityActionListener {
+    fun onCityLike(city: AllCities)
+    fun onCityInfo(city: AllCities)
 }
 
-class AllCitiesAdapter : RecyclerView.Adapter<AllCitiesAdapter.AllCitiesViewHolder>() {
+class AllCitiesAdapter(
+    private val onCityActionListener: OnCityActionListener
+) :
+    RecyclerView.Adapter<AllCitiesAdapter.AllCitiesViewHolder>(),
+    View.OnClickListener {
+
+    var favoritesCities: List<Long> = emptyList()
+        @SuppressLint("NotifyDataSetChanged")
+        set(newValue) {
+            field = newValue
+            notifyDataSetChanged()
+        }
 
     var data: List<AllCities> = emptyList()
-        set(newValue) {
-            val diffUtil = AllCitiesDiffUtil(field, newValue)
-            field = newValue
-            val diffUtilResult = DiffUtil.calculateDiff(diffUtil)
-            diffUtilResult.dispatchUpdatesTo(this@AllCitiesAdapter)
-        }
 
     override fun getItemCount(): Int = data.size
 
@@ -46,22 +36,42 @@ class AllCitiesAdapter : RecyclerView.Adapter<AllCitiesAdapter.AllCitiesViewHold
         val inflater = LayoutInflater.from(parent.context)
         val binding = ItemAllCitiesBinding.inflate(inflater, parent, false)
 
+        binding.itemLikeCity.setOnClickListener(this)
+        binding.root.setOnClickListener(this)
+
         return AllCitiesViewHolder(binding)
     }
 
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: AllCitiesViewHolder, position: Int) {
         val city = data[position]
-
+        val context = holder.itemView.context
 
         with(holder.binding) {
+            itemLikeCity.tag = city
+            root.tag = city
+
+            val isLiked = favoritesCities.indexOfFirst { it == city.id }
+            val color = if (isLiked != -1) R.color.red else R.color.darkGreyDayTheme
+
             cityTextView.text = city.name
             descriptionTextView.text = "\"${city.description}\""
             windSpeedTextView.text = "Wind Speed: ${city.windSpeed} m/c"
             temperatureTextView.text = "Temperature: ${createTemperatureString(city)}"
             descriptionImageView.setImageResource(createDescriptionImageView(city.description))
+            itemLikeCity.setColorFilter(
+                ContextCompat.getColor(context, color), android.graphics.PorterDuff.Mode.SRC_IN
+            )
         }
+    }
 
+    override fun onClick(view: View) {
+        val city: AllCities = view.tag as AllCities
+
+        when (view.id) {
+            R.id.itemLikeCity -> onCityActionListener.onCityLike(city)
+            else -> onCityActionListener.onCityInfo(city)
+        }
     }
 
     private fun createTemperatureString(city: AllCities) =
