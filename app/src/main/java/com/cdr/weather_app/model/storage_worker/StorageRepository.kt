@@ -7,13 +7,13 @@ import com.google.gson.Gson
 import org.json.JSONArray
 import java.io.*
 
-typealias FavoriteCitiesListener = (favoriteCities: List<StorageFavoriteCity>) -> Unit
+typealias StorageCitiesListener = (favoriteCities: List<StorageFavoriteCity>) -> Unit
 
 class StorageRepository(private val appContext: Context) : Repository {
     private var favoriteCities = mutableListOf<StorageFavoriteCity>()
-    private val favoriteCitiesListeners = mutableListOf<FavoriteCitiesListener>()
+    private val storageCitiesListeners = mutableListOf<StorageCitiesListener>()
 
-    private fun readFavoriteCitiesFromStorage(): List<StorageFavoriteCity> {
+    fun readFavoriteCitiesFromStorage(): List<StorageFavoriteCity> {
         val dataFromStorage = ArrayList<StorageFavoriteCity>()
 
         return if (File(appContext.filesDir.absolutePath + "/" + FAVORITE_DATA_FILE_NAME).exists()) {
@@ -69,17 +69,17 @@ class StorageRepository(private val appContext: Context) : Repository {
         saveFavoriteCitiesInStorage()
     }
 
-    fun addListener(listener: FavoriteCitiesListener) {
-        favoriteCitiesListeners.add(listener)
+    fun addListener(listener: StorageCitiesListener) {
+        storageCitiesListeners.add(listener)
         listener.invoke(favoriteCities)
     }
 
-    fun removeListener(listener: FavoriteCitiesListener) {
-        favoriteCitiesListeners.remove(listener)
+    fun removeListener(listener: StorageCitiesListener) {
+        storageCitiesListeners.remove(listener)
         listener.invoke(favoriteCities)
     }
 
-    private fun notifyChanges() = favoriteCitiesListeners.forEach { it.invoke(favoriteCities) }
+    private fun notifyChanges() = storageCitiesListeners.forEach { it.invoke(favoriteCities) }
 
     companion object {
         private const val FAVORITE_DATA_FILE_NAME = "FAVORITE_CITIES"

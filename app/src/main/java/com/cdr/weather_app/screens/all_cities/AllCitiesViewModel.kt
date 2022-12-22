@@ -11,7 +11,7 @@ import com.cdr.weather_app.model.all_cities_worker.AllCities
 import com.cdr.weather_app.model.all_cities_worker.AllCitiesListener
 import com.cdr.weather_app.model.all_cities_worker.AllCitiesRepository
 import com.cdr.weather_app.model.all_cities_worker.correctSort
-import com.cdr.weather_app.model.storage_worker.FavoriteCitiesListener
+import com.cdr.weather_app.model.storage_worker.StorageCitiesListener
 import com.cdr.weather_app.model.storage_worker.StorageRepository
 import com.cdr.weather_app.screens.favorites_cities.FavoriteCitiesFragment
 import com.cdr.weather_app.screens.internet_connection.InternetConnectionFragment
@@ -36,14 +36,14 @@ class AllCitiesViewModel(
             _allCities.value = it.correctSort()
         }
     }
-    private val favoriteCitiesListener: FavoriteCitiesListener = {
+    private val storageCitiesListener: StorageCitiesListener = {
         val buffIDs = mutableListOf<Long>()
         it.forEach { value -> buffIDs.add(value.id) }
         _favoriteIDs.value = buffIDs
     }
 
     init {
-        favoriteCitiesRepository.addListener(favoriteCitiesListener)
+        favoriteCitiesRepository.addListener(storageCitiesListener)
         allCitiesRepository.addListener(allCitiesListener)
         allCitiesRepository.downloadData()
     }
@@ -69,7 +69,7 @@ class AllCitiesViewModel(
 
     override fun onCleared() {
         super.onCleared()
-        favoriteCitiesRepository.removeListener(favoriteCitiesListener)
+        favoriteCitiesRepository.removeListener(storageCitiesListener)
         allCitiesRepository.removeListener(allCitiesListener)
     }
 }

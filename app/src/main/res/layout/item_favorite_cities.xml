@@ -50,16 +50,6 @@
         app:layout_constraintTop_toBottomOf="@id/cityTextView"
         tools:text="Temperature: 11.70 °C" />
 
-    <TextView
-        android:id="@+id/windSpeedTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingStart="10dp"
-        android:paddingEnd="10dp"
-        app:layout_constraintStart_toEndOf="@+id/descriptionImageView"
-        app:layout_constraintTop_toBottomOf="@id/temperatureTextView"
-        tools:text="Wind Speed: 4.8 m/c" />
-
     <ImageButton
         android:id="@+id/itemMore"
         style="@style/Theme.Favorite.ImageButton"
