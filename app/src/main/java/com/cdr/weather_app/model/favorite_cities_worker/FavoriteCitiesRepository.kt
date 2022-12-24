@@ -15,7 +15,7 @@ typealias FavoriteCitiesListener = (favoriteCities: List<FavoriteCities>) -> Uni
 
 class FavoriteCitiesRepository : Repository {
 
-    private val cities = mutableListOf<FavoriteCities>()
+    private var cities = mutableListOf<FavoriteCities>()
     private val favoriteCitiesListeners = mutableListOf<FavoriteCitiesListener>()
 
     private val retrofitClient: Retrofit =
@@ -40,7 +40,8 @@ class FavoriteCitiesRepository : Repository {
                                 id = weatherResponse?.id?.toLong(),
                                 name = weatherResponse?.name,
                                 description = weatherResponse?.weather?.get(0)?.main,
-                                temperature = weatherResponse?.main?.temp
+                                temperature = weatherResponse?.main?.temp,
+                                linkName = city.linkName
                             )
                         )
                         notifyChanges()
@@ -52,6 +53,16 @@ class FavoriteCitiesRepository : Repository {
                 }
             })
         }
+    }
+
+    fun removeFavoriteCity(city: FavoriteCities) {
+        val index = cities.indexOfFirst { it.id == city.id }
+        if (index == -1) return
+
+        cities = ArrayList(cities)
+        cities.removeAt(index)
+
+        notifyChanges()
     }
 
     fun addListener(favoriteCitiesListener: FavoriteCitiesListener) {

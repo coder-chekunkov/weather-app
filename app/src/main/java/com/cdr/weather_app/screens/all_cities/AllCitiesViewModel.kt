@@ -64,7 +64,7 @@ class AllCitiesViewModel(
         isSnackbarShow = false
     }
 
-    fun likeCity(city: AllCities) = favoriteCitiesRepository.likeCity(city)
+    fun likeCity(city: AllCities) = favoriteCitiesRepository.likeCity(city.id!!, city.linkName!!)
     fun moreInfo(city: AllCities) = uiActions.showToast(city.toString())
 
     override fun onCleared() {

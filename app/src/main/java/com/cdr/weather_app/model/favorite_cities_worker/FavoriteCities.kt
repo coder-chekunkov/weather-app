@@ -4,7 +4,8 @@ data class FavoriteCities(
     val id: Long?,
     val name: String?,
     val description: String?,
-    val temperature: Float?
+    val temperature: Float?,
+    val linkName: String?
 ) {
     override fun toString(): String = "$name[Description: $description;]"
 }

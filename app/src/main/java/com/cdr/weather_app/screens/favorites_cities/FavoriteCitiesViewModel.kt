@@ -14,10 +14,11 @@ import com.cdr.weather_app.model.storage_worker.StorageRepository
 class FavoriteCitiesViewModel(
     private val uiActions: UiActions,
     private val favoriteCitiesRepository: FavoriteCitiesRepository,
-    storageRepository: StorageRepository
+    private val storageRepository: StorageRepository
 ) : BaseViewModel() {
 
-    private var favoriteCitiesFromStorage: List<StorageFavoriteCity>
+    private var favoriteCitiesFromStorage: List<StorageFavoriteCity> =
+        storageRepository.readFavoriteCitiesFromStorage()
 
     private val _allFavoriteCities = MutableLiveData<List<FavoriteCities>?>()
     val allFavoriteCities: LiveData<List<FavoriteCities>?> = _allFavoriteCities
@@ -27,8 +28,6 @@ class FavoriteCitiesViewModel(
     }
 
     init {
-        favoriteCitiesFromStorage = storageRepository.readFavoriteCitiesFromStorage()
-
         favoriteCitiesRepository.addListener(favoriteCitiesListener)
         if (favoriteCitiesFromStorage.isEmpty()) _allFavoriteCities.value = null
         else favoriteCitiesRepository.downloadData(favoriteCitiesFromStorage)
@@ -38,7 +37,10 @@ class FavoriteCitiesViewModel(
         uiActions.showSnackbar(view, message, color)
 
     fun showInfoFavoriteCity(city: FavoriteCities) = uiActions.showToast(city.toString())
-    fun removeFavoriteCity(city: FavoriteCities) = uiActions.showToast("TODO: remove -> $city")
+    fun removeFavoriteCity(city: FavoriteCities) {
+        favoriteCitiesRepository.removeFavoriteCity(city)
+        storageRepository.likeCity(city.id!!, city.linkName!!)
+    }
 
     override fun onCleared() {
         super.onCleared()

@@ -2,7 +2,6 @@ package com.cdr.weather_app.model.storage_worker
 
 import android.content.Context
 import com.cdr.core.model.Repository
-import com.cdr.weather_app.model.all_cities_worker.AllCities
 import com.google.gson.Gson
 import org.json.JSONArray
 import java.io.*
@@ -53,14 +52,14 @@ class StorageRepository(private val appContext: Context) : Repository {
         writer.close()
     }
 
-    fun likeCity(city: AllCities) {
-        val index = favoriteCities.indexOfFirst { it.id == city.id }
+    fun likeCity(cityId: Long, cityLinkName: String) {
+        val index = favoriteCities.indexOfFirst { it.id == cityId }
 
         favoriteCities = ArrayList(favoriteCities)
         if (index == -1) favoriteCities.add(
             StorageFavoriteCity(
-                id = city.id!!,
-                linkName = city.linkName!!
+                id = cityId,
+                linkName = cityLinkName
             )
         )
         else favoriteCities.removeAt(index)
