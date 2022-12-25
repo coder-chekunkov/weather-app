@@ -23,22 +23,22 @@
    <b> :hammer_and_pick: Как работает приложение?</b>  
 </p>
 
-
  - :sun_behind_rain_cloud: Для получения данных о погоде используется сервис **OpenWeatherMap**.
  - :desktop_computer: Загрузка данных производится с помощью **Retrofit**.
  - :floppy_disk: Для обработки полученных данных используется **Gson**.
+ - :hammer: Архитектура приложения: **MVVM**.
 
  <p align="center">
    <b> :framed_picture: Галерея приложения "Weather"</b>  
 </p>
 
 <p align="center">
- <img alt="GIF" src="https://github.com/coder-chekunkov/weather-app/blob/main/wiki_images/wiki_image_001.jpg" width="230"/>
- <img alt="GIF" src="https://github.com/coder-chekunkov/weather-app/blob/main/wiki_images/wiki_image_002.jpg" width="230"/>
- <img alt="GIF" src="https://github.com/coder-chekunkov/weather-app/blob/main/wiki_images/wiki_image_003.jpg" width="230"/> <br/>
- <img alt="GIF" src="https://github.com/coder-chekunkov/weather-app/blob/main/wiki_images/wiki_image_004.jpg" width="230"/>
- <img alt="GIF" src="https://github.com/coder-chekunkov/weather-app/blob/main/wiki_images/wiki_image_005.jpg" width="230"/>
- <img alt="GIF" src="https://github.com/coder-chekunkov/weather-app/blob/main/wiki_images/wiki_image_006.jpg" width="230"/>
+ <img alt="gif_001" src="https://github.com/coder-chekunkov/weather-app/blob/main/wiki_images/gif_001.gif" width="230"/>
+ <img alt="image_002" src="https://github.com/coder-chekunkov/weather-app/blob/main/wiki_images/image_002.jpg" width="230"/>
+ <img alt="image_003" src="https://github.com/coder-chekunkov/weather-app/blob/main/wiki_images/image_003.jpg" width="230"/> <br/>
+ <img alt="image_004" src="https://github.com/coder-chekunkov/weather-app/blob/main/wiki_images/image_004.jpg" width="230"/>
+ <img alt="image_005" src="https://github.com/coder-chekunkov/weather-app/blob/main/wiki_images/image_005.jpg" width="230"/>
+ <img alt="image_006" src="https://github.com/coder-chekunkov/weather-app/blob/main/wiki_images/image_006.jpg" width="230"/> <br/>
 </p>
 
 <p align="center">
