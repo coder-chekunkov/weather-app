@@ -9,10 +9,10 @@ import java.io.*
 typealias StorageCitiesListener = (favoriteCities: List<StorageFavoriteCity>) -> Unit
 
 class StorageRepository(private val appContext: Context) : Repository {
-    private var favoriteCities = mutableListOf<StorageFavoriteCity>()
+    private val favoriteCities by lazy { readFavoriteCitiesFromStorage() }
     private val storageCitiesListeners = mutableListOf<StorageCitiesListener>()
 
-    fun readFavoriteCitiesFromStorage(): List<StorageFavoriteCity> {
+    fun readFavoriteCitiesFromStorage(): MutableList<StorageFavoriteCity> {
         val dataFromStorage = ArrayList<StorageFavoriteCity>()
 
         return if (File(appContext.filesDir.absolutePath + "/" + FAVORITE_DATA_FILE_NAME).exists()) {
@@ -28,7 +28,7 @@ class StorageRepository(private val appContext: Context) : Repository {
                 )
             }
             dataFromStorage
-        } else emptyList()
+        } else emptyList<StorageFavoriteCity>() as MutableList<StorageFavoriteCity>
     }
 
     private fun getStringDataFromStorage(): String {
@@ -55,7 +55,6 @@ class StorageRepository(private val appContext: Context) : Repository {
     fun likeCity(cityId: Long, cityLinkName: String) {
         val index = favoriteCities.indexOfFirst { it.id == cityId }
 
-        favoriteCities = ArrayList(favoriteCities)
         if (index == -1) favoriteCities.add(
             StorageFavoriteCity(
                 id = cityId,
